@@ -1,5 +1,7 @@
 ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/safer_tele/files/gun_actions.lua")
 
+dofile_once("mods/safer_tele/files/nxml_things.lua")
+
 function OnWorldPreUpdate()
     
 end

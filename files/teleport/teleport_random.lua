@@ -1,5 +1,38 @@
-function teleport_random(entity, x, y, max_attempts)
-    
+function teleport_random(entity, x, y, tries)
+    ray_test = dofile_once("mods/safer_tele/files/teleport/ray_test.lua")
+
+    local valid_dests = {}
+
+    local steps = 6
+
+    local inc = (2 * math.pi) / tries
+    local step_dist = (1024 - 128) / steps
+
+    for i = 1, tries do
+        local a = inc * i
+
+        local start_x = x + 128 * math.cos(a)
+        local start_y = y - 5 + 128 * math.sin(a)
+
+        for ii = 0, steps - 1 do
+            local test_x = start_x + ii * step_dist * math.cos(a)
+            local test_y = start_y + ii * step_dist * math.sin(a)
+            local rays_ok, dest_x, dest_y = ray_test(test_x, test_y, 8, 7)
+            if rays_ok then
+                if DoesWorldExistAt(dest_x - 5, dest_y - 5, dest_x + 5, dest_y + 5) then
+                    table.insert(valid_dests, {x = dest_x, y = dest_y})
+                end
+            end
+        end
+    end
+
+    if #valid_dests > 0 then
+        SetRandomSeed(entity + x, y)
+        local dest = valid_dests[Random(1, #valid_dests)]
+        return true, dest.x, dest.y
+    end
+
+    return false, x, y
 end
 
 return teleport_random
