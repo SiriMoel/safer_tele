@@ -1,4 +1,8 @@
 function ray_test(ray_test_x, ray_test_y, ray_count, ray_dist, try)
+    local raytrace_func = RaytraceSurfacesAndLiquiform
+    if GlobalsGetValue("safer_tele.avoid_gas", "false") == "true" then
+        raytrace_func = Raytrace
+    end
     local check_range = (tonumber(GlobalsGetValue("safer_tele.mat_check_range", "10")) or 10) + 5
     local max_tries = tonumber(GlobalsGetValue("safer_tele.max_tries", "4")) or 4
     try = try or 1
@@ -7,7 +11,7 @@ function ray_test(ray_test_x, ray_test_y, ray_count, ray_dist, try)
         local ray_a = ray_i * (2 * math.pi) / ray_count
         local ray_x = ray_test_x + ray_dist * math.cos(ray_a)
         local ray_y = ray_test_y + ray_dist * math.sin(ray_a)
-        if RaytraceSurfacesAndLiquiform(ray_test_x, ray_test_y, ray_x, ray_y) then
+        if raytrace_func(ray_test_x, ray_test_y, ray_x, ray_y) then
             rays_ok = false
         elseif rays_ok == false and try < max_tries then
             local rays_ok_2, ray_dest_x, ray_dest_y = ray_test(ray_x, ray_y, 8, check_range, try + 1)

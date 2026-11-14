@@ -1,2 +1,10 @@
+Aims to make teleportation safer by avoiding liquids (so you won't be teleported into lava or other dangerous materials) and introducing other safety features.
+
+Currently makes Teleportatium, Unstable Teleportatium, the Master of Teleportation, and the Teleportitis Perk safer.
+
+All this mod's features can be toggled and customised in the mod settings to adjust teleportation safety & other features.
+There's also the option to enable a short-duration Slow Falling effect that is applied when you teleport to further improve safety.
+(it does make teleportation much safer, but it's disabled by default because it isn't in vanilla Noita)
+
 Discord: https://discord.gg/FKaRA9HMUq
 Github: https://github.com/SiriMoel/safer_tele

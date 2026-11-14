@@ -5,11 +5,17 @@ function update_settings_globals()
     GlobalsSetValue("safer_tele.slow_fall_duration", tostring(ModSettingGet("safer_tele.slow_fall_duration")))
     GlobalsSetValue("safer_tele.slower_fall", tostring(ModSettingGet("safer_tele.slower_fall")))
     GlobalsSetValue("safer_tele.max_tries", tostring(ModSettingGet("safer_tele.max_tries")))
+    GlobalsSetValue("safer_tele.velocity", tostring(ModSettingGet("safer_tele.velocity")))
+    GlobalsSetValue("safer_tele.avoid_gas", tostring(ModSettingGet("safer_tele.avoid_gas")))
 end
 
 ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/safer_tele/files/gun_actions.lua")
 
 dofile_once("mods/safer_tele/files/nxml_things.lua")
+
+if ModSettingGet("safer_tele.safer_teleportitis") then
+    ModLuaFileAppend("data/scripts/perks/perk_list.lua", "mods/safer_tele/files/teleportitis_perk_append.lua")
+end
 
 local translations = ModTextFileGetContent("data/translations/common.csv")
 if translations ~= nil then

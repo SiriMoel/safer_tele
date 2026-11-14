@@ -3,9 +3,15 @@ teleport_aim = dofile_once("mods/safer_tele/files/teleport/teleport_aim.lua")
 
 function finish_teleport(entity, x, y)
     EntitySetTransform(entity, x, y)
-    local comp_vel = EntityGetFirstComponent(entity, "VelocityComponent")
-    if comp_vel ~= nil then
-        ComponentSetValue2(comp_vel, "mVelocity", 0, 0)
+    if GlobalsGetValue("safer_tele.velocity", "true") == "true" then
+        local comp_vel = EntityGetFirstComponent(entity, "VelocityComponent")
+        if comp_vel ~= nil then
+            ComponentSetValue2(comp_vel, "mVelocity", 0, 0)
+        end
+        local comp_char_data = EntityGetFirstComponent(entity, "CharacterDataComponent")
+        if comp_char_data ~= nil then
+            ComponentSetValue2(comp_char_data, "mVelocity", 0, 0)
+        end
     end
     GamePrint(GameTextGetTranslatedOrNot("$log_teleported") .. " (safer)")
     GamePlaySound("data/audio/Desktop/misc.bank", "game_effect/teleport/tick", x, y)
@@ -37,8 +43,4 @@ function UnstableTeleportatiumTele(entity)
     if success then
         finish_teleport(entity, new_x, new_y)
     end
-end
-
-function TeleportitisTele(entity)
-    -- idk
 end
