@@ -13,7 +13,7 @@ end
 
 function TeleportatiumTele(entity)
     local x, y = EntityGetTransform(entity)
-    local success, new_x, new_y = teleport_aim(entity, x, y, 10)
+    local success, new_x, new_y = teleport_aim(entity, x, y, tonumber(GlobalsGetValue("safer_tele.check_steps", "10")) or 10)
     if success then
         finish_teleport(entity, new_x, new_y)
     else

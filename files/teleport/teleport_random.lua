@@ -1,9 +1,11 @@
 function teleport_random(entity, x, y, tries)
     ray_test = dofile_once("mods/safer_tele/files/teleport/ray_test.lua")
 
+    local check_range = tonumber(GlobalsGetValue("safer_tele.mat_check_range", "10")) or 10
+
     local valid_dests = {}
 
-    local steps = 6
+    local steps = tonumber(GlobalsGetValue("safer_tele.check_steps", "10")) or 10
 
     local inc = (2 * math.pi) / tries
     local step_dist = (1024 - 128) / steps
@@ -17,7 +19,7 @@ function teleport_random(entity, x, y, tries)
         for ii = 0, steps - 1 do
             local test_x = start_x + ii * step_dist * math.cos(a)
             local test_y = start_y + ii * step_dist * math.sin(a)
-            local rays_ok, dest_x, dest_y = ray_test(test_x, test_y, 8, 7)
+            local rays_ok, dest_x, dest_y = ray_test(test_x, test_y, 8, check_range)
             if rays_ok then
                 if DoesWorldExistAt(dest_x - 5, dest_y - 5, dest_x + 5, dest_y + 5) then
                     table.insert(valid_dests, {x = dest_x, y = dest_y})

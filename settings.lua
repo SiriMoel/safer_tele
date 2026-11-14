@@ -1,104 +1,16 @@
 dofile("data/scripts/lib/mod_settings.lua")
 dofile_once("data/scripts/lib/utilities.lua")
---dofile_once("mods/souls/files/scripts/keys.lua")
 
-skeys = {
-    [4] = "A",
-    [5] = "B",
-    [6] = "C",
-    [7] = "D",
-    [8] = "E",
-    [9] = "F",
-    [10] = "G",
-    [11] = "H",
-    [12] = "I",
-    [13] = "J",
-    [14] = "K",
-    [15] = "L",
-    [16] = "M",
-    [17] = "N",
-    [18] = "O",
-    [19] = "P",
-    [20] = "Q",
-    [21] = "R",
-    [22] = "S",
-    [23] = "T",
-    [24] = "U",
-    [25] = "V",
-    [26] = "W",
-    [27] = "X",
-    [28] = "Y",
-    [29] = "Z",
-    [30] = "1",
-    [31] = "2",
-    [32] = "3",
-    [33] = "4",
-    [34] = "5",
-    [35] = "6",
-    [36] = "7",
-    [37] = "8",
-    [38] = "9",
-    [39] = "0",
-    [40] = "Return",
-    [42] = "Back",
-    [43] = "Tab",
-    [44] = "Space",
-    [45] = "-",
-    [46] = "=",
-    [47] = "[",
-    [48] = "]",
-    [49] = [[\]],
-    [51] = ";",
-    [52] = "'",
-    [53] = ",",
-    [54] = "~",
-    [55] = ".",
-    [56] = "/",
-    [57] = "CAPS",
-    [73] = "Ins",
-    [74] = "Home",
-    [75] = "PgUp",
-    [76] = "Del",
-    [77] = "End",
-    [78] = "PgDown",
-    [79] = "Right",
-    [80] = "Left",
-    [81] = "Down",
-    [82] = "Up",
-    [83] = "Num",
-    [84] = "KpDiv",
-    [85] = "KpMult",
-    [86] = "KpMinus",
-    [87] = "KpPlus",
-    [88] = "KpEnter",
-    [89] = "Kp1",
-    [90] = "Kp2",
-    [91] = "Kp3",
-    [92] = "Kp4",
-    [93] = "Kp5",
-    [94] = "Kp6",
-    [95] = "Kp7",
-    [96] = "Kp8",
-    [97] = "Kp9",
-    [98] = "Kp0",
-    [99] = "Kp.",
-    [103] = "KpEquals",
-}
-
-function mod_setting_bool_souls(mod_id, gui, in_main_menu, im_id, setting)
+function mod_setting_bool_st(mod_id, gui, in_main_menu, im_id, setting)
 	local value = ModSettingGetNextValue( mod_setting_get_id(mod_id,setting) )
 	if type(value) ~= "boolean" then value = setting.value_default or false end
 
 	local text = "" 
 
-    if in_main_menu then
-		text = value and "ON!" or "Off"
-	else
-        text = GameTextGet(value and "$souls_setting_on" or "$souls_setting_off")
-    end
+    text = value and "ON!" or "Off"
 
     if value then
-        GuiColorSetForNextWidget(gui, 0.6, 1.0, 1.0, 1.0)
+        GuiColorSetForNextWidget(gui, 0.5, 0.81, 0.92, 1.0)
     else
         GuiColorSetForNextWidget(gui, 0.6, 0.4, 0.4, 1.0)
     end
@@ -124,7 +36,7 @@ function mod_setting_bool_souls(mod_id, gui, in_main_menu, im_id, setting)
 	mod_setting_tooltip(mod_id, gui, in_main_menu, setting)
 end
 
-function mod_setting_enum_souls(mod_id, gui, in_main_menu, im_id, setting)
+function mod_setting_enum_st(mod_id, gui, in_main_menu, im_id, setting)
 	local value = ModSettingGetNextValue( mod_setting_get_id(mod_id,setting) )
 	if type(value) ~= "string" then value = setting.value_default or "" end
 
@@ -140,7 +52,7 @@ function mod_setting_enum_souls(mod_id, gui, in_main_menu, im_id, setting)
 
     local p = value_id / #setting.values
 
-    GuiColorSetForNextWidget(gui, 0.7 - 0.4 * p, 0.3 + 0.4 * p, 0.6 + 0.4 * p, 1.0)
+    GuiColorSetForNextWidget(gui, 0.5 - 0.4 * p, 0.41 + 0.4 * p, 0.52 + 0.4 * p, 1.0)
 
 	GuiText(gui, mod_setting_group_x_offset, 0, text, 1, "", true)
 	
@@ -168,10 +80,10 @@ function mod_setting_enum_souls(mod_id, gui, in_main_menu, im_id, setting)
 	mod_setting_tooltip( mod_id, gui, in_main_menu, setting )
 end
 
-function mod_setting_category_button_souls(mod_id, gui, im_id, im_id2, category)
-	local image_file = "mods/souls/files/ui_gfx/button_fold_close.png"
+function mod_setting_category_button_st(mod_id, gui, im_id, im_id2, category)
+	local image_file = "mods/safer_tele/files/button_fold_close.png"
 	if category._folded then
-		image_file = "mods/souls/files/ui_gfx/button_fold_open.png"
+		image_file = "mods/safer_tele/files/button_fold_open.png"
 	end
 
 	GuiLayoutBeginHorizontal( gui, 0, 0 )
@@ -203,60 +115,6 @@ function mod_setting_category_button_souls(mod_id, gui, im_id, im_id2, category)
 	return clicked
 end
 
-function mod_setting_souls_key_magic(mod_id, gui, in_main_menu, im_id, setting)
-	local value = ModSettingGetNextValue(mod_setting_get_id(mod_id, setting))
-	if type(value) ~= "boolean" then value = setting.value_default or false end
-
-    local key_now = ModSettingGetNextValue(setting.key_setting)
-
-    local key_string = (skeys[key_now] ~= nil) and ("[" .. skeys[key_now] .. "]") or "???"
-
-    local text = value and "!!! " or key_string
-
-    if value then
-        GuiColorSetForNextWidget(gui, 1.0, 0.4, 0.7, 1.0)
-    else
-        GuiColorSetForNextWidget(gui, 0.6, 1.0, 1.0, 1.0)
-    end
-
-	GuiText(gui, mod_setting_group_x_offset, 0, text, 1, "", true)
-
-    GuiColorSetForNextWidget(gui, 0.6, 0.6, 0.6, 1.0)
-
-    local text_offset = math.max(GuiGetTextDimensions(gui, text) + 4, 24)
-
-    local clicked, right_clicked = GuiButton(gui, im_id, mod_setting_group_x_offset + text_offset, -11, setting.ui_name)
-
-    GuiColorSetForNextWidget(gui, 1, 1, 1, 1)
-
-    local set_key
-
-    if value then
-        for key = 4, 103 do
-            if skeys[key] ~= nil and InputIsKeyDown(key) then
-                set_key = key
-                break
-            end
-        end
-        if set_key ~= nil then
-            ModSettingSetNextValue(setting.key_setting, set_key, false)
-            ModSettingSetNextValue(mod_setting_get_id(mod_id, setting), false, false)
-        end
-    end
-
-    if clicked then
-		ModSettingSetNextValue(mod_setting_get_id(mod_id, setting), not value, false)
-		mod_setting_handle_change_callback(mod_id, gui, in_main_menu, setting, value, not value)
-	end
-    if right_clicked then
-        ModSettingSetNextValue(setting.key_setting, setting.key_setting_default, false)
-        ModSettingSetNextValue(mod_setting_get_id(mod_id, setting), false, false)
-        mod_setting_handle_change_callback(mod_id, gui, in_main_menu, setting, false, setting.value_default)
-    end
-
-	mod_setting_tooltip(mod_id, gui, in_main_menu, setting)
-end
-
 function mod_setting_change_callback(mod_id, gui, in_main_menu, setting, old_value, new_value)
 
 end
@@ -264,7 +122,75 @@ end
 local mod_id = "safer_tele"
 mod_settings_version = 1
 mod_settings = {
-    
+    {
+        category_id = "safety",
+        ui_name = "Teleportation Safety",
+        ui_description = "Settings for adjusting teleportation safety.",
+        foldable = true,
+        _folded = true,
+        settings = {
+            {
+                id = "mat_check_range",
+                ui_name = "Material check range",
+                ui_description = "How far around a possible destination should solids & liquids be checked for?",
+                value_default = "10",
+                values = {{"6", "6"}, {"8", "8"}, {"10", "10"}, {"12", "12"}, {"16", "16"}, {"20", "20"}},
+                scope = MOD_SETTING_SCOPE_RUNTIME,
+                ui_fn = mod_setting_enum_st,
+            },
+            {
+                id = "check_steps",
+                ui_name = "Destination check steps",
+                ui_description = "who knows",
+                value_default = "10",
+                values = {{"5", "5"}, {"10", "10"}, {"15", "15"}, {"20", "20"}},
+                scope = MOD_SETTING_SCOPE_RUNTIME,
+                ui_fn = mod_setting_enum_st,
+            },
+        },
+    },
+    {
+        category_id = "tele_liquids",
+        ui_name = "Teleporting liquids",
+        ui_description = "Settings for Teleportatium & Unstable Teleportatium.",
+        foldable = true,
+        _folded = true,
+        settings = {
+            {
+                id = "safer_teleportatium",
+                ui_name = "Safer Teleportatium",
+                ui_description = "Should Teleportatium be safer?",
+                value_default = true,
+                scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
+                ui_fn = mod_setting_bool_st,
+            },
+            {
+                id = "safer_unstable_teleportatium",
+                ui_name = "Safer Unstable Teleportatium",
+                ui_description = "Should Unstable Teleportatium be safer?",
+                value_default = true,
+                scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
+                ui_fn = mod_setting_bool_st,
+            },
+        },
+    },
+    {
+        category_id = "other_tele",
+        ui_name = "Other teleporting",
+        ui_description = "Settings for other causes of teleportation.",
+        foldable = true,
+        _folded = true,
+        settings = {
+            {
+                id = "safer_mage_tele",
+                ui_name = "Safer Master of Teleportation",
+                ui_description = "Should the effect inflicted be safer?",
+                value_default = true,
+                scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
+                ui_fn = mod_setting_bool_st,
+            },
+        },
+    },
 }
 
 function ModSettingsUpdate( init_scope )
@@ -276,7 +202,7 @@ function ModSettingsGuiCount()
 	return mod_settings_gui_count( mod_id, mod_settings )
 end
 
-function souls_mod_settings_gui( mod_id, settings, gui, in_main_menu )
+function st_mod_settings_gui( mod_id, settings, gui, in_main_menu )
 	local im_id = 1
 
 	for i,setting in ipairs(settings) do
@@ -286,12 +212,12 @@ function souls_mod_settings_gui( mod_id, settings, gui, in_main_menu )
 			if setting.foldable then
 				local im_id2 = im_id
 				im_id = im_id + 1
-				local clicked_category_heading = mod_setting_category_button_souls( mod_id, gui, im_id, im_id2, setting )
+				local clicked_category_heading = mod_setting_category_button_st( mod_id, gui, im_id, im_id2, setting )
 				if not setting._folded then
 					GuiAnimateBegin( gui )
 					GuiAnimateAlphaFadeIn( gui, 3458923234, 0.1, 0.0, clicked_category_heading )
 					mod_setting_group_x_offset = mod_setting_group_x_offset + 6
-					souls_mod_settings_gui( mod_id, setting.settings, gui, in_main_menu )
+					st_mod_settings_gui( mod_id, setting.settings, gui, in_main_menu )
 					mod_setting_group_x_offset = mod_setting_group_x_offset - 6
 					GuiAnimateEnd( gui )
 					GuiLayoutAddVerticalSpacing( gui, 4 )
@@ -303,7 +229,7 @@ function souls_mod_settings_gui( mod_id, settings, gui, in_main_menu )
 					GuiTooltip( gui, setting.ui_description, "" )
 				end
 				mod_setting_group_x_offset = mod_setting_group_x_offset + 2
-				souls_mod_settings_gui( mod_id, setting.settings, gui, in_main_menu )
+				st_mod_settings_gui( mod_id, setting.settings, gui, in_main_menu )
 				mod_setting_group_x_offset = mod_setting_group_x_offset - 2
 				GuiLayoutAddVerticalSpacing( gui, 4 )
 			end
@@ -335,5 +261,5 @@ function souls_mod_settings_gui( mod_id, settings, gui, in_main_menu )
 end
 
 function ModSettingsGui(gui, in_main_menu)
-	souls_mod_settings_gui(mod_id, mod_settings, gui, in_main_menu)
+	st_mod_settings_gui(mod_id, mod_settings, gui, in_main_menu)
 end
