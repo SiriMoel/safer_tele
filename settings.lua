@@ -77,7 +77,7 @@ function mod_setting_enum_st(mod_id, gui, in_main_menu, im_id, setting)
 		mod_setting_handle_change_callback( mod_id, gui, in_main_menu, setting, value, setting.value_default )
 	end
 
-	mod_setting_tooltip( mod_id, gui, in_main_menu, setting )
+	mod_setting_tooltip(mod_id, gui, in_main_menu, setting)
 end
 
 function mod_setting_category_button_st(mod_id, gui, im_id, im_id2, category)
@@ -86,31 +86,36 @@ function mod_setting_category_button_st(mod_id, gui, im_id, im_id2, category)
 		image_file = "mods/safer_tele/files/button_fold_open.png"
 	end
 
-	GuiLayoutBeginHorizontal( gui, 0, 0 )
-	GuiIdPush( gui, 892304589 )
+	GuiLayoutBeginHorizontal(gui, 0, 0)
+	GuiIdPush(gui, 892304589)
+
+	GuiOptionsAddForNextWidget(gui, GUI_OPTION.DrawActiveWidgetCursorOff)
+	GuiOptionsAddForNextWidget(gui, GUI_OPTION.NoPositionTween )
+	local clicked2 = GuiImageButton(gui, im_id2, 0, 0, "", image_file)
 
 	--GuiOptionsAddForNextWidget( gui, GUI_OPTION.DrawSemiTransparent )
     GuiColorSetForNextWidget(gui, 0.7, 0.7, 0.7, 0.8)
-	local clicked1 = GuiButton( gui, im_id, mod_setting_group_x_offset, 0, category.ui_name )
+	local clicked1 = GuiButton(gui, im_id, mod_setting_group_x_offset + 3, 0, category.ui_name)
     GuiColorSetForNextWidget(gui, 1, 1, 1, 1)
-	if is_visible_string( category.ui_description ) then
-		GuiTooltip( gui, category.ui_description, "" )
+
+	if is_visible_string(category.ui_description) then
+		GuiTooltip(gui, category.ui_description, "")
 	end
 
-	GuiOptionsAddForNextWidget( gui, GUI_OPTION.DrawActiveWidgetCursorOff )
-	GuiOptionsAddForNextWidget( gui, GUI_OPTION.NoPositionTween )
-	local clicked2 = GuiImageButton( gui, im_id2, 0, 0, "", image_file )
-	if is_visible_string( category.ui_description ) then
-		GuiTooltip( gui, category.ui_description, "" )
+	local clicked3 = false
+	if not category._folded then
+		GuiOptionsAddForNextWidget(gui, GUI_OPTION.DrawActiveWidgetCursorOff)
+		GuiOptionsAddForNextWidget(gui, GUI_OPTION.NoPositionTween)
+		clicked3 = GuiImageButton(gui, im_id2, 3, 0, "", "mods/safer_tele/files/button_fold_close_2.png")
 	end
 
-	local clicked = clicked1 or clicked2
+	local clicked = clicked1 or clicked2 or clicked3
 	if clicked then
 		category._folded = not category._folded
 	end
 
-	GuiIdPop( gui )
-	GuiLayoutEnd( gui )
+	GuiIdPop(gui)
+	GuiLayoutEnd(gui)
 
 	return clicked
 end
@@ -132,27 +137,36 @@ mod_settings = {
             {
                 id = "mat_check_range",
                 ui_name = "Material check range",
-                ui_description = "How far around a possible destination should solids & liquids be checked for?",
-                value_default = "10",
-                values = {{"6", "6"}, {"8", "8"}, {"10", "10"}, {"12", "12"}, {"16", "16"}, {"20", "20"}},
+                ui_description = "How far around a possible destination should solids & liquids be checked for?\nHigher values will result in potentially safer teleports but with fewer possible destinations.",
+                value_default = "30",
+                values = {{"10", "10"}, {"20", "20"}, {"30", "30"}, {"40", "40"}, {"50", "50"}},
                 scope = MOD_SETTING_SCOPE_RUNTIME,
                 ui_fn = mod_setting_enum_st,
             },
             {
                 id = "check_steps",
                 ui_name = "Destination check steps",
-                ui_description = "who knows",
-                value_default = "10",
-                values = {{"5", "5"}, {"10", "10"}, {"15", "15"}, {"20", "20"}},
+                ui_description = "Higher values will result in a greater number of possible destinations.",
+                value_default = "20",
+                values = {{"5", "5"}, {"10", "10"}, {"15", "15"}, {"20", "20"}, {"25", "25"}, {"30", "30"}, {"35", "35"}},
+                scope = MOD_SETTING_SCOPE_RUNTIME,
+                ui_fn = mod_setting_enum_st,
+            },
+			{
+                id = "max_tries",
+                ui_name = "Alt destination tests",
+                ui_description = "The maximum times an unsuitable destination will be checked for a nearby suitable destination.\nHigher values will increase the number of possible destinations but potentially decrease safety.",
+                value_default = "4",
+                values = {{"4", "4"}, {"6", "6"}, {"8", "8"}, {"10", "10"}},
                 scope = MOD_SETTING_SCOPE_RUNTIME,
                 ui_fn = mod_setting_enum_st,
             },
         },
     },
     {
-        category_id = "tele_liquids",
-        ui_name = "Teleporting liquids",
-        ui_description = "Settings for Teleportatium & Unstable Teleportatium.",
+        category_id = "tele_causes",
+        ui_name = "Causes of Teleportation",
+        ui_description = "Settings for enabling safe teleportation.",
         foldable = true,
         _folded = true,
         settings = {
@@ -172,21 +186,46 @@ mod_settings = {
                 scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
                 ui_fn = mod_setting_bool_st,
             },
-        },
-    },
-    {
-        category_id = "other_tele",
-        ui_name = "Other teleporting",
-        ui_description = "Settings for other causes of teleportation.",
-        foldable = true,
-        _folded = true,
-        settings = {
-            {
+			{
                 id = "safer_mage_tele",
                 ui_name = "Safer Master of Teleportation",
                 ui_description = "Should the effect inflicted be safer?",
                 value_default = true,
                 scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
+                ui_fn = mod_setting_bool_st,
+            },
+        },
+    },
+	{
+        category_id = "slow_fall",
+        ui_name = "Slow Falling Effect",
+        ui_description = "Settings for the slow fall effect from teleporting.",
+        foldable = true,
+        _folded = true,
+        settings = {
+            {
+                id = "slow_fall_effect",
+                ui_name = "Apply effect",
+                ui_description = "Should safe teleporting grant the effect?",
+                value_default = true,
+                scope = MOD_SETTING_SCOPE_RUNTIME,
+                ui_fn = mod_setting_bool_st,
+            },
+            {
+                id = "slow_fall_duration",
+                ui_name = "Effect duration",
+                ui_description = "How many seconds should the effect last for?",
+                value_default = "120",
+                values = {{"30", "0.5s"}, {"60", "1s"}, {"120", "2s"}, {"150", "2.5s"}, {"180", "3s"}, {"210", "3.5s"}, {"240", "4s"}},
+                scope = MOD_SETTING_SCOPE_RUNTIME,
+                ui_fn = mod_setting_enum_st,
+            },
+			{
+                id = "slower_fall",
+                ui_name = "Slower falling",
+                ui_description = "Should the effect slow your falling even more?",
+                value_default = false,
+                scope = MOD_SETTING_SCOPE_RUNTIME,
                 ui_fn = mod_setting_bool_st,
             },
         },

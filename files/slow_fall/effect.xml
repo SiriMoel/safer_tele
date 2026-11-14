@@ -1,0 +1,27 @@
+<Entity>
+
+    <InheritTransformComponent 
+		_enabled="1"
+    ></InheritTransformComponent>	
+
+	<GameEffectComponent
+		effect="CUSTOM"
+		custom_effect_id="SAFER_TELE_SLOW_FALL"
+		frames="120"
+	></GameEffectComponent>
+	
+	<UIIconComponent
+		name="$status_st_slow_fall"
+		description="$statusdesc_st_slow_fall"
+		icon_sprite_file="mods/safer_tele/files/slow_fall/status.png"
+		is_perk="0"
+		display_above_head="0"
+		display_in_hud="1"
+	></UIIconComponent>
+
+    <LuaComponent
+        script_source_file="mods/safer_tele/files/slow_fall/effect.lua"
+        execute_every_n_frame="1"
+    ></LuaComponent>
+
+</Entity>

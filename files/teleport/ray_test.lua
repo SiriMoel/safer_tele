@@ -1,5 +1,6 @@
 function ray_test(ray_test_x, ray_test_y, ray_count, ray_dist, try)
-    local check_range = (tonumber(GlobalsGetValue("safer_tele.mat_check_range", "10")) or 10) + 2
+    local check_range = (tonumber(GlobalsGetValue("safer_tele.mat_check_range", "10")) or 10) + 5
+    local max_tries = tonumber(GlobalsGetValue("safer_tele.max_tries", "4")) or 4
     try = try or 1
     local rays_ok = true
     for ray_i = 1, ray_count do
@@ -8,7 +9,7 @@ function ray_test(ray_test_x, ray_test_y, ray_count, ray_dist, try)
         local ray_y = ray_test_y + ray_dist * math.sin(ray_a)
         if RaytraceSurfacesAndLiquiform(ray_test_x, ray_test_y, ray_x, ray_y) then
             rays_ok = false
-        elseif rays_ok == false and try < 4 then
+        elseif rays_ok == false and try < max_tries then
             local rays_ok_2, ray_dest_x, ray_dest_y = ray_test(ray_x, ray_y, 8, check_range, try + 1)
             if rays_ok_2 then
                 return rays_ok_2, ray_dest_x, ray_dest_y

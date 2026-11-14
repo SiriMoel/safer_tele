@@ -9,6 +9,13 @@ function finish_teleport(entity, x, y)
     end
     GamePrint(GameTextGetTranslatedOrNot("$log_teleported") .. " (safer)")
     GamePlaySound("data/audio/Desktop/misc.bank", "game_effect/teleport/tick", x, y)
+    EntityLoad("mods/safer_tele/files/particles_entity.xml", x, y - 5)
+    if GlobalsGetValue("safer_tele.slow_fall_effect", "true") == "true" then
+        local effect = EntityLoad("mods/safer_tele/files/slow_fall/effect.xml", x, y)
+        local gec = EntityGetFirstComponentIncludingDisabled(effect, "GameEffectComponent")
+        ComponentSetValue2(gec, "frames", tonumber(GlobalsGetValue("safer_tele.slow_fall_duration", "120")))
+        EntityAddChild(entity, effect)
+    end
 end
 
 function TeleportatiumTele(entity)
