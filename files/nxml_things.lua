@@ -57,7 +57,7 @@ for _, v in ipairs(effects_tele_unstable) do
         for content in nxml.edit_file(v.path) do
             local gec = content:first_of("GameEffectComponent")
             gec:set("effect", "CUSTOM")
-            gec:set("custom_effect_id", "SAFER_TELEPORTATION")
+            gec:set("custom_effect_id", "SAFER_UNSTABLE_TELEPORTATION")
             gec:set("teleportation_probability", 0)
             content:create_children(
                 { VariableStorageComponent  = {
