@@ -13,7 +13,7 @@ function finish_teleport(entity, x, y)
             ComponentSetValue2(comp_char_data, "mVelocity", 0, 0)
         end
     end
-    GamePrint(GameTextGetTranslatedOrNot("$log_teleported") .. " (safer)")
+    GamePrint(GameTextGetTranslatedOrNot("$log_teleported"))
     GamePlaySound("data/audio/Desktop/misc.bank", "game_effect/teleport/tick", x, y)
     EntityLoad("mods/safer_tele/files/particles_entity.xml", x, y - 5)
     if GlobalsGetValue("safer_tele.slow_fall_effect", "true") == "true" then

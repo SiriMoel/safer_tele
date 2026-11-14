@@ -1,6 +1,9 @@
 function teleport_random(entity, x, y, tries)
     ray_test = dofile_once("mods/safer_tele/files/teleport/ray_test.lua")
 
+    local current_biome = BiomeMapGetName(x, y)
+    local check_biome = GlobalsGetValue("safer_tele.biome_check", "true") == "true"
+
     local check_range = tonumber(GlobalsGetValue("safer_tele.mat_check_range", "10")) or 10
 
     local valid_dests = {}
@@ -22,7 +25,14 @@ function teleport_random(entity, x, y, tries)
             local rays_ok, dest_x, dest_y = ray_test(test_x, test_y, 8, check_range)
             if rays_ok then
                 if DoesWorldExistAt(dest_x - 5, dest_y - 5, dest_x + 5, dest_y + 5) then
-                    table.insert(valid_dests, {x = dest_x, y = dest_y})
+                    if check_biome then
+                        local dest_biome = BiomeMapGetName(dest_x, dest_y)
+                        if current_biome == "$biome_holymountain" or current_biome == dest_biome then
+                            table.insert(valid_dests, {x = dest_x, y = dest_y})
+                        end
+                    else
+                        table.insert(valid_dests, {x = dest_x, y = dest_y})
+                    end
                 end
             end
         end

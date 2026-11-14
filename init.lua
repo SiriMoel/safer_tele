@@ -7,9 +7,10 @@ function update_settings_globals()
     GlobalsSetValue("safer_tele.max_tries", tostring(ModSettingGet("safer_tele.max_tries")))
     GlobalsSetValue("safer_tele.velocity", tostring(ModSettingGet("safer_tele.velocity")))
     GlobalsSetValue("safer_tele.avoid_gas", tostring(ModSettingGet("safer_tele.avoid_gas")))
+    GlobalsSetValue("safer_tele.biome_check", tostring(ModSettingGet("safer_tele.biome_check")))
 end
 
-ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/safer_tele/files/gun_actions.lua")
+--ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/safer_tele/files/gun_actions.lua")
 
 dofile_once("mods/safer_tele/files/nxml_things.lua")
 

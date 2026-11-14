@@ -1,8 +1,8 @@
 <Mod
 	name="Safer Teleportation"
-	description="!!!"
+	description="Aims to make teleportation safer."
 	request_no_api_restrictions="0"	
-	version="0.1"
+	version="1.0"
 	icon="icon.png"
 	author="Moldos"
 ></Mod>

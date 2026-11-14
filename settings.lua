@@ -150,6 +150,14 @@ mod_settings = {
                 scope = MOD_SETTING_SCOPE_RUNTIME,
                 ui_fn = mod_setting_bool_st,
             },
+			{
+                id = "biome_check",
+                ui_name = "Biome restriction",
+                ui_description = "Should the vanilla teleportation biome restriction apply?\nThis means that you can only be teleported:\n- Into the same biome\n- From a Holy Mountain into another biome",
+                value_default = true,
+                scope = MOD_SETTING_SCOPE_RUNTIME,
+                ui_fn = mod_setting_bool_st,
+            },
             {
                 id = "mat_check_range",
                 ui_name = "Material check range",
@@ -204,8 +212,8 @@ mod_settings = {
             },
 			{
                 id = "safer_mage_tele",
-                ui_name = "Safer Master of Teleportation",
-                ui_description = "Should the effect inflicted be safer?",
+                ui_name = "Safer Enemy Teleportation",
+                ui_description = "Should the enemy-inflicted teleportation effect be safer?",
                 value_default = true,
                 scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
                 ui_fn = mod_setting_bool_st,
